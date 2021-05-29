@@ -11,20 +11,6 @@ window.addEventListener("load", () => {
   });
 });
 
-// await data;
-// //console.log("1",data)
-
-// async function datas(arrayData = data){
-//   try {
-//     datas = arrayData;
-//     console.log(datas)
-//     return datas
-//   } catch (error) {
-//     console.log("error" + error);
-//   }
-// }
-
-// datas();
 
 var list = document.getElementById("list");
 //função load a lista sempre q necessario
