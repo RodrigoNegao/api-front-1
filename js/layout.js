@@ -17,5 +17,5 @@ function listUrl() {
     location.href = '../pages/user-list.html';
 }
 
-// var alert = document.getElementById("alert");
-// alert.style.display = "none";
+var alert = document.getElementById("alert");
+alert.style.display = "none";
