@@ -1,8 +1,9 @@
 var data;
+const link = "https://transacoesapi.herokuapp.com"
 window.addEventListener("load", () => {
   //Todos os elementos do DOM e scripts estão disponiveis
   //http://localhost:3000/users
-  axios.get("https://transacoesapi.herokuapp.com/users").then((resposta) => {
+  axios.get(link + "/users").then((resposta) => {
     //console.log(resposta.data.User);
     //data vai carregar o dados para outras functions
     data = resposta.data.User;
@@ -27,6 +28,11 @@ function listLoad(data) {
                 <td>${user.age} </td>
                 <td>${user.email}</td>
                 <td>
+                    <button onclick="transactionsUser(${user.id})" id="trans-${user.id}" 
+                    type="button" class="btn btn-success"
+                    data-toggle="modal" data-target="#exampleModal">
+                    Trans.
+                    </button>
                     <button onclick="editUser(${user.id})" id="edit-${user.id}" 
                     type="button" class="btn btn-info"
                     data-toggle="modal" data-target="#exampleModal">
@@ -52,7 +58,7 @@ var footerModal = document.getElementById("footerModal");
 function editUser(editId) {
   //deleteId = obj.id.split("-")[1];
   //console.log(editId);
-  tituloModal.innerHTML = `Editar <strong>Item</strong>`;
+  tituloModal.innerHTML = `Editar <strong>Cliente</strong>`;
   //console.log(data);
   user = data.find((f) => {
     return f.id === editId;
@@ -76,7 +82,86 @@ function editUser(editId) {
                         <input type="text" id="email" class="form-control"value="${user.email}" />
                       </div>
                     </div>
+                  </section> `;  
+
+  editFooterModal = `<button type="button" 
+                    onclick="btnEditUser(${user.id})" 
+                    class="btn btn-info">
+                      Editar Usuario
+                    </button>
+                    <button
+                    type="button"
+                    class="btn btn-secondary"
+                    data-dismiss="modal"
+                    >
+                    Close
+                    </button>`;
+
+  //cria outro file e criar outro function e button edit com axios.PUT
+  bodyModal.innerHTML = editbodyModal;
+  footerModal.innerHTML = editFooterModal
+}
+
+function transactionsUser(editId) {
+  //deleteId = obj.id.split("-")[1];
+  //console.log(editId);
+  tituloModal.innerHTML = `Editar/Ver<strong>Transações</strong>`;
+  //console.log(data);
+  // encontrar o registro
+  const indiceUser = data.findIndex((f) => {
+    return f.id === editId;
+  });
+
+  // user = data.find((f) => {
+  //   return f.id === editId;
+  // });
+
+  const transactions = data[indiceUser].transactions;
+  
+  editbodyModal = `<section class="container">
+                    <div id="forms">
+                      <div class="col-md-8">
+                        <label for="name" class="form-label">Nome</label>
+                        <input type="text" id="name" class="form-control" value="${user.name}"/>
+                      </div>
+                      <div class="col-md-8">
+                        <label for="age" class="form-label">Idade</label>
+                        <input type="text" id="age" class="form-control" value="${user.age}"/>
+                      </div>
+                      <div class="col-md-8">
+                        <label for="cpf" class="form-label">CPF</label>
+                        <input type="text" id="cpf" class="form-control" value="${user.cpf}"/>
+                      </div>
+                      <div class="col-md-8">
+                        <label for="email" class="form-label">email</label>
+                        <input type="text" id="email" class="form-control"value="${user.email}" />
+                      </div>
+                    </div>
                   </section> `;
+    let transTable = "";
+    transTable += `<table class="table table-striped">
+                      <thead>
+                        <tr>
+                          <th>Nome</th>
+                          <th>CPF</th>
+                          <th>Idade</th>
+                          <th>Email</th>
+                          <th>Comandos</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        
+                      </tbody>
+                    </table>`;
+    transactions.forEach((trans) => {
+      //Linha de um Usuario
+      transTable += `<tr>
+                  <td>${trans.title}</td>
+                  <td>${trans.value}</td>
+                  <td>${trans.type} </td>
+                  <td>${trans.email}</td> 
+                  </tr>`;
+    });
 
   editFooterModal = `<button type="button" 
                     onclick="btnEditUser(${user.id})" 
@@ -104,8 +189,6 @@ function delUser(deleteId) {
   //cpfString = cpf.toString();
   // console.log(cpfString)
 
-  // btndelItem.style.display = "block";
-  // btndelTudo.style.display = "none";
 
   tituloModal.innerHTML = `Confirmação de Exclusão do <strong>Item</strong>`;
   bodyModal.innerHTML = `Tem certeza ? Não poderá ser recupado o <strong>Usuario(a) ${deleteId}</strong> no futuro. `;
@@ -137,7 +220,7 @@ function btnEditUser(id) {
   //console.log(name,ageInt,cpf,email)
 
   axios
-    .put("http://localhost:3000/users/" + id, {
+    .put(link + "/users/" + id, {
       name: name,
       cpf: cpf,
       email: email,
@@ -145,25 +228,23 @@ function btnEditUser(id) {
     })
     .then((response) => {
       console.log(response);
+      location.reload();
     })
     .catch((error) => {
       console.log(error);
+      location.reload();
     });
-
-  location.reload();
-  //return json;
 }
 
 function btnDeleteUser(id) {
   axios
-    .delete("http://localhost:3000/users/" + id )
+    .delete(link + "/users/" + id )
     .then((response) => {
       console.log(response);
+      location.reload();
     })
     .catch((error) => {
       console.log(error);
+      location.reload();
     });
-
-  location.reload();
-  //return json;
 }
