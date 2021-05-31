@@ -38,7 +38,7 @@ function listLoad(data) {
                     data-toggle="modal" data-target="#exampleModal">
                     Editar
                     </button>
-                    <button onclick="delUser(${user.id})" id="del-${user.id}" 
+                    <button onclick="delUser(${user.id},'${user.cpf}')" id="del-${user.id}" 
                     type="button" class="btn btn-danger"
                     data-toggle="modal" data-target="#exampleModal">
                     Excluir
@@ -137,9 +137,18 @@ async function transactionsUser(editId) {
                         <input type="text" id="type" class="form-control" 
                         placeholder="income or outcome" value=""/>
                       </div>
-                      <div class="mt-2 mb-2">
-                        <button type="button" onclick="btnAddTrans(${data[indiceUser].id})" class="btn btn-primary">
+                      <div class="row mt-2 mb-2 mx-2">
+                        <button id="btnAddTrans" type="button" 
+                        onclick="btnAddTrans(${data[indiceUser].id})" class="mx-3 btn btn-primary">
                           Salvar Trans.
+                        </button>
+                        <button id="btnEditTrans" type="button" 
+                        onclick="btnEditTrans()" class="mx-3 btn btn-success">
+                          Editar Trans.
+                        </button>
+                        <button id="btnCancelTrans" type="button" 
+                        onclick="btnCancelTrans()" class="mx-3 btn btn-info">
+                          Cancelar
                         </button>
                       </div>
                     </div>
@@ -164,9 +173,14 @@ async function transactionsUser(editId) {
                   <td>${trans.type}</td>
                   <td>
                   <button type="button" 
-                    onclick="btnEditUser(${trans.id})" 
+                    onclick="btnToEditTrans('${data[indiceUser].id}-t-${trans.id}')" 
                     class="btn btn-info">
                       Editar Trans.
+                  </button>
+                  <button type="button" 
+                    onclick="btnToDelTrans('${data[indiceUser].id}-t-${trans.id}')" 
+                    class="btn btn-warning">
+                      Deletar
                   </button>
                   </td>  
                   </tr>`;
@@ -213,21 +227,27 @@ async function transactionsUser(editId) {
                     data-dismiss="modal"
                     >
                     Close
-                    </button>`;
+                    </button>`; 
 
   bodyModal.innerHTML = transbodyModal;
+
+  var btnEditTrans = document.getElementById("btnEditTrans");
+  btnEditTrans.style.display = "none";
+  var btnCancelTrans = document.getElementById("btnCancelTrans");
+  btnCancelTrans.style.display = "none";
+
   footerModal.innerHTML = transFooterModal
 }
 
 //var deleteId ='';
 // Passar CPF ele faz conta de matematica antes de usar a variavel
-function delUser(deleteId) {
+function delUser(deleteId,cpf) {
   //console.log(deleteId);
   //cpfString = cpf.toString();
   // console.log(cpfString);
 
   tituloModal.innerHTML = `Confirmação de Exclusão do <strong>Item</strong>`;
-  bodyModal.innerHTML = `Tem certeza ? Não poderá ser recupado o <strong>Usuario(a) ${deleteId}</strong> no futuro. `;
+  bodyModal.innerHTML = `Tem certeza ? Não poderá ser recupado o <strong>Usuario(a) CPF: ${cpf}</strong> no futuro. `;
   delFooterModal = `<button type="button" 
                     onclick="btnDeleteUser(${deleteId})" 
                     class="btn btn-danger">
@@ -253,8 +273,6 @@ function btnEditUser(id) {
   let ageInt = parseInt(age);
 
   //console.log(name);
-  
-  //console.log(name,ageInt,cpf,email)
 
   axios
     .put(link + "/users/" + id, {
@@ -273,18 +291,29 @@ function btnEditUser(id) {
     });
 }
 
-function btnAddTrans(id) {
+function btnDeleteUser(id) {
+  axios
+    .delete(link + "/users/" + id )
+    .then((response) => {
+      console.log(response);
+      location.reload();
+    })
+    .catch((error) => {
+      console.log(error);
+      location.reload();
+    });
+}
+
+function btnAddTrans(userId) {
   let title = document.getElementById("title").value;
   let value = document.getElementById("value").value;
   let type = document.getElementById("type").value;
   let valueInt = parseInt(value);
 
-  console.log(title);
-  
-  //console.log(name,ageInt,cpf,email)
+  //console.log(title);
 
   axios
-    .post(link + "/user/" + id + "/transactions", {
+    .post(link + "/user/" + userId + "/transactions", {
       title: title,
       value: valueInt,
       type: type,
@@ -301,15 +330,51 @@ function btnAddTrans(id) {
     });
 }
 
-function btnDeleteUser(id) {
+var userIdPlusTransId = [];
+function btnToEditTrans(ids) {
+  userIdPlusTransId = ids.split("-t-")
+  var btnAddTrans = document.getElementById("btnAddTrans");
+  btnAddTrans.style.display = "none";
+  var btnEditTrans = document.getElementById("btnEditTrans");
+  btnEditTrans.style.display = "block";
+  var btnCancelTrans = document.getElementById("btnCancelTrans");
+  btnCancelTrans.style.display = "block";
+  console.log(userIdPlusTransId)
+}
+
+
+
+function btnEditTrans() {
+  let userId = userIdPlusTransId[0];
+  let id = userIdPlusTransId[1];
+  let title = document.getElementById("title").value;
+  let value = document.getElementById("value").value;
+  let type = document.getElementById("type").value;
+  let valueInt = parseInt(value);
+
   axios
-    .delete(link + "/users/" + id )
+    .put(link + "/user/" + userId + "/transactions/" + id, {
+      title: title,
+      value: valueInt,
+      type: type,
+    })
     .then((response) => {
       console.log(response);
-      location.reload();
+      setTimeout(() => 
+        { location.reload(); }, 2000);
     })
     .catch((error) => {
       console.log(error);
-      location.reload();
+      // setTimeout(() => 
+      //   { location.reload(); }, 20000);
     });
+}
+
+function btnCancelTrans() {
+  var btnAddTrans = document.getElementById("btnAddTrans");
+  btnAddTrans.style.display = "block";
+  var btnEditTrans = document.getElementById("btnEditTrans");
+  btnEditTrans.style.display = "none";
+  var btnCancelTrans = document.getElementById("btnCancelTrans");
+  btnCancelTrans.style.display = "none";
 }
