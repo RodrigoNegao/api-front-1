@@ -102,7 +102,7 @@ function editUser(editId) {
   footerModal.innerHTML = editFooterModal
 }
 
-function transactionsUser(editId) {
+async function transactionsUser(editId) {
   //deleteId = obj.id.split("-")[1];
   //console.log(editId);
   tituloModal.innerHTML = `Editar/Ver <strong>Transações</strong>`;
@@ -118,10 +118,6 @@ function transactionsUser(editId) {
   // });
 
   const transactions = data[indiceUser].transactions;
-
-  const balance = data[indiceUser].balance;
-
-  console.log(balance);
 
   //console.log(transactions);
 
@@ -180,22 +176,36 @@ function transactionsUser(editId) {
 
     transbodyModal += transTable;
 
-    // let totalBalance = "";
-    
-    // totalBalance += `<tr>
-    //                 <td>Entrada:</td>
-    //                 <td>${balance.income}</td>
-    //                 </tr>
-    //                 <td>Saida:</td>
-    //                 <td>${balance.outcome}</td>
-    //                 <tr>
-    //                 <td>Total:</td>
-    //                 <td>${balance.total}</td>
-    //                 </tr>`;
-    // totalBalance += `</tbody>
-    //                 </table>`;
+    let balance = [];
+    try {
+      const response = await axios.get(link + "/user/" + editId + "/transactions")
+      balance = response.data.balance
+    } catch (error) {
+      console.log(error)
+    }
 
-    //transbodyModal += totalBalance;
+    // console.log(balance)
+    // console.log(balance.total)
+
+    let totalBalance = "";
+    
+    totalBalance += `<tr>
+                    <td colspan="2"></td>
+                    <td><strong>Entrada:</strong></td>
+                    <td>${balance.income}</td>
+                    </tr>
+                    <td colspan="2"></td>
+                    <td><strong>Saida:</strong></td>
+                    <td>${balance.outcome}</td>
+                    <tr>
+                    <td colspan="2"></td>
+                    <td><strong>Total:</strong></td>
+                    <td><strong>${balance.total}</strong></td>
+                    </tr>`;
+    totalBalance += `</tbody>
+                    </table>`;
+
+    transbodyModal += totalBalance;
 
     transFooterModal = `<button
                     type="button"
