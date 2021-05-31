@@ -112,14 +112,18 @@ function transactionsUser(editId) {
     return f.id === editId;
   });
 
-  console.log(indiceUser);
+  //console.log(indiceUser);
   // user = data.find((f) => {
   //   return f.id === editId;
   // });
 
   const transactions = data[indiceUser].transactions;
 
-  console.log(transactions);
+  const balance = data[indiceUser].balance;
+
+  console.log(balance);
+
+  //console.log(transactions);
 
   let transbodyModal = "";
   transbodyModal += `<section class="container">
@@ -134,7 +138,8 @@ function transactionsUser(editId) {
                       </div>
                       <div class="col-md-8">
                         <label for="type" class="form-label">Tipo</label>
-                        <input type="text" id="type" class="form-control" value=""/>
+                        <input type="text" id="type" class="form-control" 
+                        placeholder="income or outcome" value=""/>
                       </div>
                       <div class="mt-2 mb-2">
                         <button type="button" onclick="btnAddTrans(${data[indiceUser].id})" class="btn btn-primary">
@@ -160,7 +165,7 @@ function transactionsUser(editId) {
       transTable += `<tr>
                   <td>${trans.title}</td>
                   <td>${trans.value}</td>
-                  <td>${trans.type} </td>
+                  <td>${trans.type}</td>
                   <td>
                   <button type="button" 
                     onclick="btnEditUser(${trans.id})" 
@@ -170,10 +175,27 @@ function transactionsUser(editId) {
                   </td>  
                   </tr>`;
     });
-    transTable += `</tbody>
-                    </table>`;
+    // transTable += `</tbody>
+    //                 </table>`;
 
     transbodyModal += transTable;
+
+    // let totalBalance = "";
+    
+    // totalBalance += `<tr>
+    //                 <td>Entrada:</td>
+    //                 <td>${balance.income}</td>
+    //                 </tr>
+    //                 <td>Saida:</td>
+    //                 <td>${balance.outcome}</td>
+    //                 <tr>
+    //                 <td>Total:</td>
+    //                 <td>${balance.total}</td>
+    //                 </tr>`;
+    // totalBalance += `</tbody>
+    //                 </table>`;
+
+    //transbodyModal += totalBalance;
 
     transFooterModal = `<button
                     type="button"
