@@ -105,70 +105,77 @@ function editUser(editId) {
 function transactionsUser(editId) {
   //deleteId = obj.id.split("-")[1];
   //console.log(editId);
-  tituloModal.innerHTML = `Editar/Ver<strong>Transações</strong>`;
+  tituloModal.innerHTML = `Editar/Ver <strong>Transações</strong>`;
   //console.log(data);
   // encontrar o registro
   const indiceUser = data.findIndex((f) => {
     return f.id === editId;
   });
 
+  console.log(indiceUser);
   // user = data.find((f) => {
   //   return f.id === editId;
   // });
 
   const transactions = data[indiceUser].transactions;
-  
-  editbodyModal = `<section class="container">
+
+  console.log(transactions);
+
+  let transbodyModal = "";
+  transbodyModal += `<section class="container">
                     <div id="forms">
                       <div class="col-md-8">
-                        <label for="name" class="form-label">Nome</label>
-                        <input type="text" id="name" class="form-control" value="${user.name}"/>
+                        <label for="title" class="form-label">Titulo</label>
+                        <input type="text" id="title" class="form-control" value=""/>
                       </div>
                       <div class="col-md-8">
-                        <label for="age" class="form-label">Idade</label>
-                        <input type="text" id="age" class="form-control" value="${user.age}"/>
+                        <label for="value" class="form-label">Valor</label>
+                        <input type="text" id="value" class="form-control" value=""/>
                       </div>
                       <div class="col-md-8">
-                        <label for="cpf" class="form-label">CPF</label>
-                        <input type="text" id="cpf" class="form-control" value="${user.cpf}"/>
+                        <label for="type" class="form-label">Tipo</label>
+                        <input type="text" id="type" class="form-control" value=""/>
                       </div>
-                      <div class="col-md-8">
-                        <label for="email" class="form-label">email</label>
-                        <input type="text" id="email" class="form-control"value="${user.email}" />
+                      <div class="mt-2 mb-2">
+                        <button type="button" onclick="btnAddTrans(${data[indiceUser].id})" class="btn btn-primary">
+                          Salvar Trans.
+                        </button>
                       </div>
                     </div>
                   </section> `;
+
     let transTable = "";
     transTable += `<table class="table table-striped">
                       <thead>
                         <tr>
-                          <th>Nome</th>
-                          <th>CPF</th>
-                          <th>Idade</th>
-                          <th>Email</th>
+                          <th>Titulo</th>
+                          <th>Valor</th>
+                          <th>Tipo</th>
                           <th>Comandos</th>
                         </tr>
                       </thead>
-                      <tbody>
-                        
-                      </tbody>
-                    </table>`;
+                      <tbody>`;
     transactions.forEach((trans) => {
-      //Linha de um Usuario
+      //Linha de um Trans.
       transTable += `<tr>
                   <td>${trans.title}</td>
                   <td>${trans.value}</td>
                   <td>${trans.type} </td>
-                  <td>${trans.email}</td> 
+                  <td>
+                  <button type="button" 
+                    onclick="btnEditUser(${trans.id})" 
+                    class="btn btn-info">
+                      Editar Trans.
+                  </button>
+                  </td>  
                   </tr>`;
     });
+    transTable += `</tbody>
+                    </table>`;
 
-  editFooterModal = `<button type="button" 
-                    onclick="btnEditUser(${user.id})" 
-                    class="btn btn-info">
-                      Editar Usuario
-                    </button>
-                    <button
+    transbodyModal += transTable;
+
+    transFooterModal = `<button
                     type="button"
                     class="btn btn-secondary"
                     data-dismiss="modal"
@@ -176,19 +183,16 @@ function transactionsUser(editId) {
                     Close
                     </button>`;
 
-  //cria outro file e criar outro function e button edit com axios.PUT
-  bodyModal.innerHTML = editbodyModal;
-  footerModal.innerHTML = editFooterModal
+  bodyModal.innerHTML = transbodyModal;
+  footerModal.innerHTML = transFooterModal
 }
 
 //var deleteId ='';
 // Passar CPF ele faz conta de matematica antes de usar a variavel
 function delUser(deleteId) {
-  //deleteId = obj.id.split("-")[1];
-  console.log(deleteId);
+  //console.log(deleteId);
   //cpfString = cpf.toString();
-  // console.log(cpfString)
-
+  // console.log(cpfString);
 
   tituloModal.innerHTML = `Confirmação de Exclusão do <strong>Item</strong>`;
   bodyModal.innerHTML = `Tem certeza ? Não poderá ser recupado o <strong>Usuario(a) ${deleteId}</strong> no futuro. `;
@@ -216,7 +220,8 @@ function btnEditUser(id) {
 
   let ageInt = parseInt(age);
 
-  console.log(name);
+  //console.log(name);
+  
   //console.log(name,ageInt,cpf,email)
 
   axios
@@ -233,6 +238,34 @@ function btnEditUser(id) {
     .catch((error) => {
       console.log(error);
       location.reload();
+    });
+}
+
+function btnAddTrans(id) {
+  let title = document.getElementById("title").value;
+  let value = document.getElementById("value").value;
+  let type = document.getElementById("type").value;
+  let valueInt = parseInt(value);
+
+  console.log(title);
+  
+  //console.log(name,ageInt,cpf,email)
+
+  axios
+    .post(link + "/user/" + id + "/transactions", {
+      title: title,
+      value: valueInt,
+      type: type,
+    })
+    .then((response) => {
+      console.log(response);
+      setTimeout(() => 
+        { location.reload(); }, 1000);
+    })
+    .catch((error) => {
+      console.log(error);
+      setTimeout(() => 
+        { location.reload(); }, 1000);
     });
 }
 
