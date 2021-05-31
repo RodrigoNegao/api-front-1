@@ -146,6 +146,10 @@ async function transactionsUser(editId) {
                         onclick="btnEditTrans()" class="mx-3 btn btn-success">
                           Editar Trans.
                         </button>
+                        <button id="btnDelTrans" type="button" 
+                        onclick="btnDelTrans()" class="mx-3 btn btn-danger">
+                          Deletar Trans.
+                        </button>
                         <button id="btnCancelTrans" type="button" 
                         onclick="btnCancelTrans()" class="mx-3 btn btn-info">
                           Cancelar
@@ -174,12 +178,12 @@ async function transactionsUser(editId) {
                   <td>
                   <button type="button" 
                     onclick="btnToEditTrans('${data[indiceUser].id}-t-${trans.id}')" 
-                    class="btn btn-info">
-                      Editar Trans.
+                    class="btn btn-info mx-1">
+                      Editar
                   </button>
                   <button type="button" 
                     onclick="btnToDelTrans('${data[indiceUser].id}-t-${trans.id}')" 
-                    class="btn btn-warning">
+                    class="btn btn-danger mx-1">
                       Deletar
                   </button>
                   </td>  
@@ -231,6 +235,9 @@ async function transactionsUser(editId) {
 
   bodyModal.innerHTML = transbodyModal;
 
+  
+  var btnDelTrans = document.getElementById("btnDelTrans");
+  btnDelTrans.style.display = "none";
   var btnEditTrans = document.getElementById("btnEditTrans");
   btnEditTrans.style.display = "none";
   var btnCancelTrans = document.getElementById("btnCancelTrans");
@@ -331,12 +338,28 @@ function btnAddTrans(userId) {
 }
 
 var userIdPlusTransId = [];
+
 function btnToEditTrans(ids) {
   userIdPlusTransId = ids.split("-t-")
   var btnAddTrans = document.getElementById("btnAddTrans");
   btnAddTrans.style.display = "none";
+  var btnDelTrans = document.getElementById("btnDelTrans");
+  btnDelTrans.style.display = "none";
   var btnEditTrans = document.getElementById("btnEditTrans");
   btnEditTrans.style.display = "block";
+  var btnCancelTrans = document.getElementById("btnCancelTrans");
+  btnCancelTrans.style.display = "block";
+  console.log(userIdPlusTransId)
+}
+
+function btnToDelTrans(ids) {
+  userIdPlusTransId = ids.split("-t-");
+  var btnDelTrans = document.getElementById("btnDelTrans");
+  btnDelTrans.style.display = "block";
+  var btnAddTrans = document.getElementById("btnAddTrans");
+  btnAddTrans.style.display = "none";
+  var btnEditTrans = document.getElementById("btnEditTrans");
+  btnEditTrans.style.display = "none";
   var btnCancelTrans = document.getElementById("btnCancelTrans");
   btnCancelTrans.style.display = "block";
   console.log(userIdPlusTransId)
@@ -358,6 +381,24 @@ function btnEditTrans() {
       value: valueInt,
       type: type,
     })
+    .then((response) => {
+      console.log(response);
+      setTimeout(() => 
+        { location.reload(); }, 2000);
+    })
+    .catch((error) => {
+      console.log(error);
+      // setTimeout(() => 
+      //   { location.reload(); }, 20000);
+    });
+}
+
+function btnDelTrans() {
+  let userId = userIdPlusTransId[0];
+  let id = userIdPlusTransId[1];
+
+  axios
+    .delete(link + "/user/" + userId + "/transactions/" + id)
     .then((response) => {
       console.log(response);
       setTimeout(() => 
