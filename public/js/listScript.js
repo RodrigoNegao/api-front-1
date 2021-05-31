@@ -254,7 +254,7 @@ function delUser(deleteId,cpf) {
   // console.log(cpfString);
 
   tituloModal.innerHTML = `Confirmação de Exclusão do <strong>Item</strong>`;
-  bodyModal.innerHTML = `Tem certeza ? Não poderá ser recupado o <strong>Usuario(a) CPF: ${cpf}</strong> no futuro. `;
+  bodyModal.innerHTML = `Tem certeza ? Não poderá ser recupado o <strong>Usuario(a) CPF: ${cpf}</strong> no futuro.`;
   delFooterModal = `<button type="button" 
                     onclick="btnDeleteUser(${deleteId})" 
                     class="btn btn-danger">
@@ -349,20 +349,29 @@ function btnToEditTrans(ids) {
   btnEditTrans.style.display = "block";
   var btnCancelTrans = document.getElementById("btnCancelTrans");
   btnCancelTrans.style.display = "block";
-  console.log(userIdPlusTransId)
+  //console.log(userIdPlusTransId)
 }
 
 function btnToDelTrans(ids) {
+  bodyModal.innerHTML = `<div class="col-md-8">
+                          <p> Temcerteza de apagar ?</p>
+                        </div>
+                        <div class="row mt-2 mb-2 mx-2">                          
+                          <button id="btnDelTrans" type="button" 
+                          onclick="btnDelTrans()" class="mx-3 btn btn-danger">
+                            Deletar Trans.
+                          </button>`;
+
   userIdPlusTransId = ids.split("-t-");
-  var btnDelTrans = document.getElementById("btnDelTrans");
-  btnDelTrans.style.display = "block";
-  var btnAddTrans = document.getElementById("btnAddTrans");
-  btnAddTrans.style.display = "none";
-  var btnEditTrans = document.getElementById("btnEditTrans");
-  btnEditTrans.style.display = "none";
-  var btnCancelTrans = document.getElementById("btnCancelTrans");
-  btnCancelTrans.style.display = "block";
-  console.log(userIdPlusTransId)
+  // var btnDelTrans = document.getElementById("btnDelTrans");
+  // btnDelTrans.style.display = "block";
+  // var btnAddTrans = document.getElementById("btnAddTrans");
+  // btnAddTrans.style.display = "none";
+  // var btnEditTrans = document.getElementById("btnEditTrans");
+  // btnEditTrans.style.display = "none";
+  // var btnCancelTrans = document.getElementById("btnCancelTrans");
+  // btnCancelTrans.style.display = "block";
+  //console.log(userIdPlusTransId)
 }
 
 
