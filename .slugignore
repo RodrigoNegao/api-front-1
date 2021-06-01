@@ -1,2 +1,6 @@
 Readme.md
 *.lock
+dist/
+public/
+src/
+tsconfig.json
