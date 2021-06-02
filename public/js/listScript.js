@@ -356,7 +356,7 @@ function btnToDelTrans(ids) {
   bodyModal.innerHTML = `<div class="col-md-8">
                           <p> Temcerteza de apagar ?</p>
                         </div>
-                        <div class="row mt-2 mb-2 mx-2">                          
+                        <div class="row mt-2 mb-2 mx-2">
                           <button id="btnDelTrans" type="button" 
                           onclick="btnDelTrans()" class="mx-3 btn btn-danger">
                             Deletar Trans.
