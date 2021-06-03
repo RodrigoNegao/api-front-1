@@ -7,7 +7,7 @@ function addUser() {
 
   let ageInt = parseInt(age);
 
-  console.log(name)
+  //console.log(name)
   //console.log(name,ageInt,cpf,email)
 
   axios
@@ -20,7 +20,7 @@ function addUser() {
     }
     )
     .then((response) => {
-      console.log(response);
+      console.log(response.data.msg);
       if (response.status === 200){
         alert.style.display = "block";
         setTimeout(() => 
@@ -28,7 +28,7 @@ function addUser() {
       }
     })
     .catch((error) => {
-      console.log(error);
+      console.log(error.response.data.msg);
     });
 
   //return json;

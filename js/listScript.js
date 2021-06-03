@@ -289,12 +289,12 @@ function btnEditUser(id) {
       age: ageInt,
     })
     .then((response) => {
-      console.log(response);
+      console.log(response.data.msg);
       location.reload();
     })
     .catch((error) => {
-      console.log(error);
-      location.reload();
+      console.log(error.response.data.msg);
+      //location.reload();
     });
 }
 
@@ -302,12 +302,12 @@ function btnDeleteUser(id) {
   axios
     .delete(link + "/users/" + id )
     .then((response) => {
-      console.log(response);
+      console.log(response.data.msg);
       location.reload();
     })
     .catch((error) => {
-      console.log(error);
-      location.reload();
+      console.log(error.response.data.msg);
+      //location.reload();
     });
 }
 
@@ -326,14 +326,14 @@ function btnAddTrans(userId) {
       type: type,
     })
     .then((response) => {
-      console.log(response);
+      console.log(response.data.msg);
       setTimeout(() => 
         { location.reload(); }, 1000);
     })
     .catch((error) => {
-      console.log(error);
-      setTimeout(() => 
-        { location.reload(); }, 1000);
+      console.log(error.response.data.msg);
+      // setTimeout(() => 
+      //   { location.reload(); }, 1000);
     });
 }
 
@@ -388,12 +388,12 @@ function btnEditTrans() {
       type: type,
     })
     .then((response) => {
-      console.log(response);
+      console.log(response.data.msg);
       setTimeout(() => 
         { location.reload(); }, 2000);
     })
     .catch((error) => {
-      console.log(error);
+      console.log(error.response.data.msg);
       // setTimeout(() => 
       //   { location.reload(); }, 20000);
     });
@@ -406,12 +406,12 @@ function btnDelTrans() {
   axios
     .delete(link + "/user/" + userId + "/transactions/" + id)
     .then((response) => {
-      console.log(response);
+      console.log(response.data.msg);
       setTimeout(() => 
         { location.reload(); }, 2000);
     })
     .catch((error) => {
-      console.log(error);
+      console.log(error.response.data.msg);
       // setTimeout(() => 
       //   { location.reload(); }, 20000);
     });
