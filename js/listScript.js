@@ -172,9 +172,9 @@ async function transactionsUser(editId) {
     transactions.forEach((trans) => {
       //Linha de um Trans.
       transTable += `<tr>
-                  <td>${trans.title}</td>
-                  <td>${trans.value}</td>
-                  <td>${trans.type}</td>
+                  <td id='title-${trans.id}'>${trans.title}</td>
+                  <td id='value-${trans.id}'>${trans.value}</td>
+                  <td id='type-${trans.id}'>${trans.type}</td>
                   <td>
                   <button type="button" 
                     onclick="btnToEditTrans('${data[indiceUser].id}-t-${trans.id}')" 
@@ -350,28 +350,25 @@ function btnToEditTrans(ids) {
   var btnCancelTrans = document.getElementById("btnCancelTrans");
   btnCancelTrans.style.display = "block";
   //console.log(userIdPlusTransId)
+  var titleValue = document.getElementById(`title-${userIdPlusTransId[1]}`).innerText;
+  var valueValue = document.getElementById(`value-${userIdPlusTransId[1]}`).innerText;
+  var typeValue = document.getElementById(`type-${userIdPlusTransId[1]}`).innerText;
+
+  document.getElementById("title").value = titleValue;
+  document.getElementById("value").value = valueValue;
+  document.getElementById("type").value = typeValue;
 }
 
 function btnToDelTrans(ids) {
+  userIdPlusTransId = ids.split("-t-");
   bodyModal.innerHTML = `<div class="col-md-8">
-                          <p> Temcerteza de apagar ?</p>
+                          <p> Tem certeza de apagar que gostaria de apagara Transação nº: ${userIdPlusTransId[1]}?</p>
                         </div>
                         <div class="row mt-2 mb-2 mx-2">
                           <button id="btnDelTrans" type="button" 
                           onclick="btnDelTrans()" class="mx-3 btn btn-danger">
                             Deletar Trans.
                           </button>`;
-
-  userIdPlusTransId = ids.split("-t-");
-  // var btnDelTrans = document.getElementById("btnDelTrans");
-  // btnDelTrans.style.display = "block";
-  // var btnAddTrans = document.getElementById("btnAddTrans");
-  // btnAddTrans.style.display = "none";
-  // var btnEditTrans = document.getElementById("btnEditTrans");
-  // btnEditTrans.style.display = "none";
-  // var btnCancelTrans = document.getElementById("btnCancelTrans");
-  // btnCancelTrans.style.display = "block";
-  //console.log(userIdPlusTransId)
 }
 
 
@@ -427,4 +424,7 @@ function btnCancelTrans() {
   btnEditTrans.style.display = "none";
   var btnCancelTrans = document.getElementById("btnCancelTrans");
   btnCancelTrans.style.display = "none";
+  document.getElementById("title").value = '';
+  document.getElementById("value").value = '';
+  document.getElementById("type").value = '';
 }
